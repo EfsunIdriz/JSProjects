@@ -1,0 +1,93 @@
+<html>
+<head>
+    <title>Capitals</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="jquery-3.3.1.min.js"></script>
+</head>
+<body>
+   
+    <table id="countriesTable" class="table">     
+        <tr><th>Country</th><th>Capital</th><th>Action</th></tr>     
+        <tr><td><input type="text" id="newCountryText" /></td>     
+        <td><input type="text" id="newCapitalText" /></td>     
+        <td><a href="#" id="createLink">[Create]</a></td>       
+        </tr>       
+    </table>
+                
+    <script>$(() => initializeTable())</script>
+    <script>
+        function initializeTable(){
+
+            //Attach event listeners to Create
+            $('#createLink').click(addCountry);
+            createCountry('Bulgaria','Sofia');
+            createCountry('Germany', 'Berlin');
+            createCountry('Russia', 'Moscow');
+            fixLinks();
+            //Add default entiries -> create table row & append to table
+            //Adjust links  
+            function fixLinks(){
+                $('tr a').css('display', '');
+                $('tr:last-child a:contains(Down)').css('display','none');
+                $('tr:nth-child(3) a:contains(Up)').css('display','none');
+            }
+
+            //Read input and call create row
+            function addCountry(){
+                let country = $('#newCountryText').val();
+                let capital = $('#newCapitalText').val();
+                createCountry(country, capital);
+                fixLinks();
+            }
+
+            //create table row
+            function createCountry(country, capital){
+                let row = $('<tr>')
+                    .append($(`<td>${country}</td>`))
+                    .append($(`<td>${capital}</td>`))
+                    .append($(`<td>`)
+                        .append($('<a href="#">[Up]</a>').click(moveUp))
+                        .append($('<a href="#">[Down]</a>').click(moveDown))
+                        .append($('<a href="#">[Delete]</a>').click(deleteRow)));
+                
+                row.css('display', 'none');
+                row.appendTo($('#countriesTable'));
+                row.fadeIn();
+    
+            }
+            //Move row up
+            function moveUp(){
+                let currentRow = $(this).parent().parent();
+                currentRow.fadeOut(() => {
+                    currentRow.insertBefore(currentRow.prev());
+                    currentRow.fadeIn();
+                    fixLinks();
+                });
+            }
+            //Move row down
+            function moveDown(){
+                let currentRow = $(this).parent().parent();
+                currentRow.fadeOut(() => {
+                    currentRow.insertAfter(currentRow.next());
+                    currentRow.fadeIn();
+                    fixLinks();
+                });
+                
+            }
+            //Delete row
+            function deleteRow(){
+                let currentRow = $(this).parent().parent();
+                currentRow.fadeOut(() => {
+                    currentRow.remove();
+                    fixLinks();
+                });
+                
+                
+            }  
+
+        } 
+    </script>
+</body>
+</html>
