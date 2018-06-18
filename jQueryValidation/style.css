@@ -1,0 +1,11 @@
+.error{
+    color: red;
+}
+.valid{
+    border-color: green;
+    box-shadow: 0 0 10px rgb(111, 220, 111);
+}
+.form-control:focus { 
+    border-color: red;
+    box-shadow: 0 0 10px rgb(255, 102, 102);
+}
